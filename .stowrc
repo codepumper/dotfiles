@@ -1,0 +1,3 @@
+--target=$HOME/.config
+--ignore=.git
+--ignore=.stowrc
