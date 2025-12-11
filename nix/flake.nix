@@ -7,9 +7,11 @@
     nix-darwin.inputs.nixpkgs.follows = "nixpkgs";
     
     firefox-darwin.url = "github:bandithedoge/nixpkgs-firefox-darwin";
+
+    ghostty =  "github:ghostty-org/ghostty";
   };
 
-  outputs = inputs@{ self, nixpkgs, nix-darwin, firefox-darwin, ... }:
+  outputs = inputs@{ self, nixpkgs, nix-darwin, firefox-darwin, ghostty, ... }:
   let
     # Global variables
     username = "robert";
@@ -40,7 +42,6 @@
           # ----------------------------------------------------------------
           environment.systemPackages = with pkgs; [
 	    stow
-            alacritty
             coreutils
             dockutil
             firefox-bin
