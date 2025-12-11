@@ -7,11 +7,9 @@
     nix-darwin.inputs.nixpkgs.follows = "nixpkgs";
     
     firefox-darwin.url = "github:bandithedoge/nixpkgs-firefox-darwin";
-
-    ghostty =  "github:ghostty-org/ghostty";
   };
 
-  outputs = inputs@{ self, nixpkgs, nix-darwin, firefox-darwin, ghostty, ... }:
+  outputs = inputs@{ self, nixpkgs, nix-darwin, firefox-darwin, ... }:
   let
     # Global variables
     username = "robert";
@@ -21,7 +19,7 @@
     darwinConfigurations."mbpro" = nix-darwin.lib.darwinSystem {
       inherit system;
       
-      # Pass inputs to modules so we can use 'firefox-darwin' inside the config
+      # Pass inputs to modules
       specialArgs = { inherit inputs; };
 
       modules = [
@@ -41,7 +39,7 @@
           # 2. PACKAGES
           # ----------------------------------------------------------------
           environment.systemPackages = with pkgs; [
-	    stow
+            stow
             coreutils
             dockutil
             firefox-bin
@@ -57,7 +55,6 @@
             home = "/Users/${username}";
           };
           
-          # Required for system.defaults (dock, finder, etc.) to apply to your user
           system.primaryUser = username;
 
           # ----------------------------------------------------------------
@@ -73,6 +70,9 @@
               autohide = false;
               tilesize = 64;
               show-recents = false;
+              persistent-apps = [
+                "/Applications/Firefox.app"
+              ];
             };
             finder.FXPreferredViewStyle = "clmv";
             loginwindow.GuestEnabled = false;
