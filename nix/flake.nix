@@ -5,72 +5,82 @@
     nixpkgs.url = "github:NixOS/nixpkgs/nixpkgs-unstable";
     nix-darwin.url = "github:lnl7/nix-darwin";
     nix-darwin.inputs.nixpkgs.follows = "nixpkgs";
-    
-    firefox-darwin.url = "github:bandithedoge/nixpkgs-firefox-darwin";
+    nix-homebrew.url = "github:zhaofengli-wip/nix-homebrew";
   };
 
-  outputs = inputs@{ self, nixpkgs, nix-darwin, firefox-darwin, ... }:
+  outputs = inputs@{ self, nixpkgs, nix-darwin, nix-homebrew, ... }:
   let
-    # Global variables
-    username = "robert";
+    username = "Robert";
     system = "aarch64-darwin";
+    pkgs = nixpkgs.legacyPackages.${system};
   in
   {
     darwinConfigurations."mbpro" = nix-darwin.lib.darwinSystem {
       inherit system;
-      
-      # Pass inputs to modules
-      specialArgs = { inherit inputs; };
-
       modules = [
-        ({ pkgs, config, inputs, ... }: {
+        nix-homebrew.darwinModules.nix-homebrew
+        ({ pkgs, config, ... }: {
 
-          # ----------------------------------------------------------------
-          # 1. NIX CONFIGURATION
-          # ----------------------------------------------------------------
+          # 1. NIX SETTINGS
           nix.settings.experimental-features = [ "nix-command" "flakes" ];
           nixpkgs.config.allowUnfree = true;
-          
-          nixpkgs.overlays = [
-            inputs.firefox-darwin.overlay
-          ];
 
-          # ----------------------------------------------------------------
-          # 2. PACKAGES
-          # ----------------------------------------------------------------
+          # 2. SAFETY SWITCH
+          # This forces the installer to NEVER ask for a password.
+          # If it hits a login wall, it will skip it and keep going.
+          environment.variables = {
+            GIT_TERMINAL_PROMPT = "0"; 
+          };
+
+          # 3. CLI PACKAGES
           environment.systemPackages = with pkgs; [
             stow
             coreutils
             dockutil
-            firefox-bin
             git
             neovim
+            starship
           ];
 
-          # ----------------------------------------------------------------
-          # 3. USERS
-          # ----------------------------------------------------------------
+          # 4. HOMEBREW CONFIGURATION
+          nix-homebrew = {
+            enable = true;
+            enableRosetta = true;
+            user = username;
+            autoMigrate = true;
+          };
+
+          homebrew = {
+            enable = true;
+            onActivation = {
+              autoUpdate = true;
+              cleanup = "zap"; 
+            };
+            
+            # Taps removed as requested
+            
+            casks = [
+              "ghostty"
+              "firefox"
+            ];
+          };
+
+          # 5. USERS
           users.users.${username} = {
             name = username;
             home = "/Users/${username}";
           };
-          
           system.primaryUser = username;
 
-          # ----------------------------------------------------------------
-          # 4. SYSTEM SETTINGS
-          # ----------------------------------------------------------------
+          # 6. SYSTEM DEFAULTS
           system.configurationRevision = self.rev or self.dirtyRev or null;
-          system.stateVersion = 6;
-          
-          programs.zsh.enable = true;
-
           system.defaults = {
             dock = {
               autohide = false;
               tilesize = 64;
               show-recents = false;
               persistent-apps = [
+                "/Applications/Ghostty.app"
                 "/Applications/Firefox.app"
               ];
             };
@@ -79,9 +89,18 @@
             NSGlobalDomain.AppleInterfaceStyle = "Dark";
           };
 
-          # ----------------------------------------------------------------
-          # 5. ACTIVATION SCRIPT
-          # ----------------------------------------------------------------
+          # 7. SHELL CONFIG
+          programs.zsh = {
+            enable = true;
+            # Initialize Starship
+            promptInit = "eval \"$(starship init zsh)\"";
+            # Force a clear screen when the shell starts
+            interactiveShellInit = ''
+              clear
+            '';
+          };
+
+          # 8. ACTIVATION SCRIPT
           system.activationScripts.applications.text = let
             env = pkgs.buildEnv {
               name = "system-applications";
@@ -105,7 +124,12 @@
                 chown -R "${username}:staff" "$dest"
               done
             fi
+	    rm -rf "$app_target"
           '';
+
+          system.stateVersion = 6;
+          
+	
         })
       ];
     };

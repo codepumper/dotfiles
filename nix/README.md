@@ -8,4 +8,5 @@
 
 ```sh
 brew install --cask ghostty@tip
+brew install font-meslo-lg-nerd-font
 ```

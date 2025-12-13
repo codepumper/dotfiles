@@ -1,20 +1,19 @@
 {
   "nodes": {
-    "firefox-darwin": {
-      "inputs": {
-        "nixpkgs": "nixpkgs"
-      },
+    "brew-src": {
+      "flake": false,
       "locked": {
-        "lastModified": 1764724054,
-        "narHash": "sha256-7rNfnt+81XNI0FDO8LQ1dVsEv8I6AVVEvIxaTZKIgII=",
-        "owner": "bandithedoge",
-        "repo": "nixpkgs-firefox-darwin",
-        "rev": "3234d70a371641f477bafe93b17f70da872dc615",
+        "lastModified": 1763638478,
+        "narHash": "sha256-n/IMowE9S23ovmTkKX7KhxXC2Yq41EAVFR2FBIXPcT8=",
+        "owner": "Homebrew",
+        "repo": "brew",
+        "rev": "fbfdbaba008189499958a7aeb1e2c36ab10c067d",
         "type": "github"
       },
       "original": {
-        "owner": "bandithedoge",
-        "repo": "nixpkgs-firefox-darwin",
+        "owner": "Homebrew",
+        "ref": "5.0.3",
+        "repo": "brew",
         "type": "github"
       }
     },
@@ -38,23 +37,25 @@
         "type": "github"
       }
     },
-    "nixpkgs": {
+    "nix-homebrew": {
+      "inputs": {
+        "brew-src": "brew-src"
+      },
       "locked": {
-        "lastModified": 1746683680,
-        "narHash": "sha256-+5zk+UbG0+GQlKt+gIKm+OhlYvHmkAHFXvf7hl1HDeM=",
-        "owner": "NixOS",
-        "repo": "nixpkgs",
-        "rev": "16762245d811fdd74b417cc922223dc8eb741e8b",
+        "lastModified": 1764473698,
+        "narHash": "sha256-C91gPgv6udN5WuIZWNehp8qdLqlrzX6iF/YyboOj6XI=",
+        "owner": "zhaofengli-wip",
+        "repo": "nix-homebrew",
+        "rev": "6a8ab60bfd66154feeaa1021fc3b32684814a62a",
         "type": "github"
       },
       "original": {
-        "owner": "NixOS",
-        "ref": "master",
-        "repo": "nixpkgs",
+        "owner": "zhaofengli-wip",
+        "repo": "nix-homebrew",
         "type": "github"
       }
     },
-    "nixpkgs_2": {
+    "nixpkgs": {
       "locked": {
         "lastModified": 1764642553,
         "narHash": "sha256-mvbFFzVBhVK1FjyPHZGMAKpNiqkr7k++xIwy+p/NQvA=",
@@ -72,9 +73,9 @@
     },
     "root": {
       "inputs": {
-        "firefox-darwin": "firefox-darwin",
         "nix-darwin": "nix-darwin",
-        "nixpkgs": "nixpkgs_2"
+        "nix-homebrew": "nix-homebrew",
+        "nixpkgs": "nixpkgs"
       }
     }
   },
