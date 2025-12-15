@@ -10,12 +10,12 @@
 
   outputs = inputs@{ self, nixpkgs, nix-darwin, nix-homebrew, ... }:
   let
-    username = "Robert";
+    username = "robert";
     system = "aarch64-darwin";
     pkgs = nixpkgs.legacyPackages.${system};
   in
   {
-    darwinConfigurations."mbpro" = nix-darwin.lib.darwinSystem {
+   darwinConfigurations."mbpro" = nix-darwin.lib.darwinSystem {
       inherit system;
       modules = [
         nix-homebrew.darwinModules.nix-homebrew
@@ -34,12 +34,19 @@
 
           # 3. CLI PACKAGES
           environment.systemPackages = with pkgs; [
-            stow
+	    devpod
+	    git
+	    stow
             coreutils
             dockutil
-            git
-            neovim
             starship
+
+	    # stow
+            # neovim
+            # nodejs_22
+	    # rustup
+            # R
+            # rPackages.languageserver
           ];
 
           # 4. HOMEBREW CONFIGURATION
@@ -60,6 +67,7 @@
             # Taps removed as requested
             
             casks = [
+	      "orbstack"
               "ghostty"
               "firefox"
             ];
