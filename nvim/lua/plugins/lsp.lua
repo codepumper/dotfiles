@@ -26,7 +26,7 @@ return {
             'cssls',
             'html',
             'pyright',
-            'r_language_server',
+            -- 'r_language_server',
             'texlab',
             'dotls',
             'svelte',
