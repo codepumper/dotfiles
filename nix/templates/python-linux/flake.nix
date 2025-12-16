@@ -23,6 +23,7 @@
             fzf
             
             # Dependencies for Nvim Plugins (Treesitter/Mason)
+	    clang-tools
             gcc          # Needed to compile parsers
             gnumake
             unzip
