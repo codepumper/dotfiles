@@ -41,6 +41,11 @@
           ];
 
           shellHook = ''
+            # --- FIX BACKSPACE ---
+            # Bind both common delete codes to the "delete" action
+            bindkey "^?" backward-delete-char
+            bindkey "^H" backward-delete-char
+
             echo "🐧 Welcome to the Linux Workbench"
             echo "🐍 Python: $(python3 --version)"
           '';
