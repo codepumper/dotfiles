@@ -16,13 +16,14 @@
           packages = with pkgs; [
             # --- THE EDITOR STACK ---
 	    readline
+	    zsh
 	    ncurses
             neovim
             git
             ripgrep      # For Telescope
             fd           # For Telescope
             fzf
-            
+
             # Dependencies for Nvim Plugins (Treesitter/Mason)
 	    clang-tools
             gcc # Needed to compile parsers
