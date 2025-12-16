@@ -14,7 +14,7 @@
       {
         devShells.default = pkgs.mkShell {
           packages = with pkgs; [
-            # --- 1. THE EDITOR STACK ---
+            # --- THE EDITOR STACK ---
 	    readline
             neovim
             git
@@ -24,34 +24,23 @@
             
             # Dependencies for Nvim Plugins (Treesitter/Mason)
 	    clang-tools
-            gcc          # Needed to compile parsers
+            gcc # Needed to compile parsers
             gnumake
             unzip
             gzip
-            nodejs_22    # Needed for Copilot/LSPs
+            nodejs_22 # Needed for Copilot/LSPs
             
-            # --- 2. THE LANGUAGE STACK ---
-            # Python + Prefect
-            (python311.withPackages (ps: with ps; [
-              prefect
-              pandas
-              numpy
-              virtualenv
-              pip
-            ]))
+	    python314
+            uv
             
-            # Rust (If you still need it)
-            rustup
-            
-            # R (If you still need it)
-            R
-            rPackages.languageserver
+	    rustup
+            # R
+            # rPackages.languageserver
           ];
 
           shellHook = ''
             echo "🐧 Welcome to the Linux Workbench"
-            echo "📦 Python: $(python3 --version)"
-            echo "🚀 Neovim: $(nvim --version | head -n 1)"
+            echo "🐍 Python: $(python3 --version)"
           '';
         };
       }
