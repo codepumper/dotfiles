@@ -15,6 +15,7 @@
         devShells.default = pkgs.mkShell {
           packages = with pkgs; [
             # --- 1. THE EDITOR STACK ---
+	    readline
             neovim
             git
             ripgrep      # For Telescope
