@@ -41,10 +41,13 @@
           ];
 
           shellHook = ''
-            # --- FIX BACKSPACE ---
-            # Bind both common delete codes to the "delete" action
-            bindkey "^?" backward-delete-char
-            bindkey "^H" backward-delete-char
+            # 1. Force the terminal driver to accept Backspace as "erase"
+            #    (This works in Bash, before Zsh starts)
+            stty erase '^?'
+
+            # 2. Fix the terminal type definition
+            #    (Prevents "unknown terminal" errors)
+            export TERM=xterm-256color
 
             echo "🐧 Welcome to the Linux Workbench"
             echo "🐍 Python: $(python3 --version)"
