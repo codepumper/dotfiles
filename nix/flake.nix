@@ -75,7 +75,10 @@
          programs.zsh = {
            enable = true;
            promptInit = "eval \"$(starship init zsh)\"";
-           interactiveShellInit = "clear";
+	   interactiveShellInit = ''
+             clear
+             cd ~/Dev
+           '';
          };
 
          # 7. ACTIVATION SCRIPT (FIXED USER PERMISSIONS)
@@ -118,6 +121,15 @@
              
              sudo -u ${username} PATH=$PATH:/opt/homebrew/bin:/usr/local/bin HOME=/Users/${username} \
                ${devpodPath} provider use docker >/dev/null 2>&1
+           fi
+         '';
+
+	 system.activationScripts.createDevFolder.text = ''
+           echo "Checking for Dev folder..."
+           if [ ! -d "/Users/${username}/Dev" ]; then
+             echo "Creating Dev folder..."
+             mkdir -p "/Users/${username}/Dev"
+             chown ${username}:staff "/Users/${username}/Dev"
            fi
          '';
 
