@@ -16,6 +16,7 @@
           packages = with pkgs; [
             # --- THE EDITOR STACK ---
 	    readline
+	    ncurses
             neovim
             git
             ripgrep      # For Telescope
