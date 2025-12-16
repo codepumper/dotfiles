@@ -19,7 +19,7 @@ return {
       {
         'mason-org/mason-lspconfig.nvim',
         opts = {
-          automatic_enable = false,
+          automatic_installation = false,
           ensure_installed = {
             'lua_ls',
             'bashls',
@@ -32,7 +32,7 @@ return {
             'svelte',
             'ts_ls',
             'yamlls',
-            'clangd',
+            -- 'clangd',
             -- 'sqlls',
             -- 'emmet_language_server',
             -- 'hls',
