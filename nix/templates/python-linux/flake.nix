@@ -34,6 +34,7 @@
             
 	    python314
             uv
+	    just
             
 	    rustup
             # R

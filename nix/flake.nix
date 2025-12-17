@@ -34,7 +34,6 @@
            coreutils
            dockutil
            starship
-           just
          ];
 
          # 3. HOMEBREW CONFIGURATION
