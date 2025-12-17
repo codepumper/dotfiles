@@ -28,12 +28,13 @@
 
          # 2. CLI PACKAGES
          environment.systemPackages = with pkgs; [
-            devpod
-            git
-            stow
-            coreutils
-            dockutil
-            starship
+           devpod
+           git
+           stow
+           coreutils
+           dockutil
+           starship
+           just
          ];
 
          # 3. HOMEBREW CONFIGURATION
@@ -47,7 +48,8 @@
          homebrew = {
            enable = true;
            onActivation = { autoUpdate = true; cleanup = "zap"; };
-           casks = [ "orbstack" "ghostty" "firefox" ];
+           # Added "zotero" here
+           casks = [ "orbstack" "ghostty" "firefox" "obsidian" "zotero" "proton-pass"];
          };
 
          # 4. USERS
@@ -64,7 +66,12 @@
              autohide = false;
              tilesize = 64;
              show-recents = false;
-             persistent-apps = [ "/Applications/Ghostty.app" "/Applications/Firefox.app" ];
+             persistent-apps = [
+                "/Applications/Ghostty.app"
+                "/Applications/Firefox.app"
+                "/Applications/Obsidian.app"
+                "/Applications/Zotero.app" # Added to Dock
+             ];
            };
            finder.FXPreferredViewStyle = "clmv";
            loginwindow.GuestEnabled = false;
@@ -75,7 +82,7 @@
          programs.zsh = {
            enable = true;
            promptInit = "eval \"$(starship init zsh)\"";
-	   interactiveShellInit = ''
+           interactiveShellInit = ''
              clear
              cd ~/Dev
            '';
@@ -110,7 +117,6 @@
            fi
            
            # Configure DevPod (Running as ${username})
-           # 3. Configure DevPod (Running as ${username})
            if [ -x "${devpodPath}" ]; then
              echo "🚀 Configuring DevPod Provider for ${username}..."
              
@@ -124,7 +130,7 @@
            fi
          '';
 
-	 system.activationScripts.createDevFolder.text = ''
+         system.activationScripts.createDevFolder.text = ''
            echo "Checking for Dev folder..."
            if [ ! -d "/Users/${username}/Dev" ]; then
              echo "Creating Dev folder..."
@@ -133,7 +139,19 @@
            fi
          '';
 
-         # 8. STATE VERSION (This caused your error!)
+         # Create the Obsidian Vault folder
+         system.activationScripts.createObsidianVault.text = ''
+           echo "Checking for Obsidian Vault..."
+           vault_path="/Users/${username}/Documents/Obsidian Vault"
+           
+           if [ ! -d "$vault_path" ]; then
+             echo "Creating Obsidian Vault at $vault_path..."
+             mkdir -p "$vault_path"
+             chown ${username}:staff "$vault_path"
+           fi
+         '';
+
+         # 8. STATE VERSION
          system.stateVersion = 6;
          
        })
